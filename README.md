@@ -12,7 +12,18 @@ El proyecto implementa:
 
 ---
 
-REQUISITOS
+# ESTRUCTURA DEL REPOSITORIO
+
+El repositorio contiene:
+
+* Carpeta ssl-antlr-calculator/ con el proyecto NodeJS
+* Archivo grammar.txt con la gramática utilizada
+* Cuatro ejemplos de entrada válidos e inválidos
+* Archivo README.md con instrucciones de ejecución
+
+---
+
+# REQUISITOS
 
 Antes de ejecutar el proyecto es necesario tener instalado:
 
@@ -22,19 +33,23 @@ Antes de ejecutar el proyecto es necesario tener instalado:
 
 ---
 
-CLONAR EL REPOSITORIO
+# CLONAR EL REPOSITORIO
 
 Ejecutar:
 
-git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+git clone https://github.com/Alfonso53414/53414.git
 
-Luego ingresar a la carpeta del proyecto:
+Ingresar a la carpeta del repositorio:
+
+cd 53414
+
+Luego ingresar al proyecto NodeJS:
 
 cd ssl-antlr-calculator
 
 ---
 
-INSTALAR DEPENDENCIAS
+# INSTALAR DEPENDENCIAS
 
 Ejecutar:
 
@@ -42,13 +57,17 @@ npm install
 
 ---
 
-GENERAR LEXER Y PARSER
+# GENERAR LEXER Y PARSER
 
 Ubicar el archivo:
 
 antlr-4.13.2-complete.jar
 
-en la raíz del proyecto y ejecutar:
+dentro de la carpeta:
+
+ssl-antlr-calculator/
+
+y ejecutar:
 
 java -jar antlr-4.13.2-complete.jar -Dlanguage=JavaScript -visitor -o generated Calculator.g4
 
@@ -65,7 +84,7 @@ generated/
 
 ---
 
-EJECUTAR LA APLICACIÓN
+# EJECUTAR LA APLICACIÓN
 
 El archivo analizado por el programa es:
 
@@ -77,9 +96,9 @@ node index.js
 
 ---
 
-PROBAR LOS EJEMPLOS INCLUIDOS
+# PROBAR LOS EJEMPLOS INCLUIDOS
 
-El repositorio incluye ejemplos válidos e inválidos:
+El repositorio incluye ejemplos válidos e inválidos.
 
 Ejemplos correctos:
 
@@ -95,14 +114,14 @@ Para probar cualquiera de ellos:
 
 1. Abrir el archivo deseado
 2. Copiar el contenido
-3. Pegarlo dentro de input.txt
+3. Pegarlo dentro de ssl-antlr-calculator/input.txt
 4. Ejecutar:
 
 node index.js
 
 ---
 
-EJEMPLO VÁLIDO
+# EJEMPLO VÁLIDO
 
 Entrada:
 
@@ -132,7 +151,7 @@ console.log => 2
 
 ---
 
-EJEMPLO INVÁLIDO
+# EJEMPLO INVÁLIDO
 
 Entrada:
 
