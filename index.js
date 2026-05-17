@@ -23,7 +23,22 @@ async function main() {
     let lexer = new CalculatorLexer(inputStream);
     let tokenStream = new CommonTokenStream(lexer);
     let parser = new CalculatorParser(tokenStream);
-    let tree = parser.prog();
+    tokenStream.fill();
+
+console.log("\nTABLA DE TOKENS\n");
+
+tokenStream.tokens.forEach(token => {
+
+    if (token.type !== -1) {
+
+        console.log(
+            `Lexema: ${token.text} -> Token: ${CalculatorLexer.symbolicNames[token.type]}`
+        );
+
+    }
+
+});
+    let tree = parser.program();
     
     // Verifico si se produjeron errores
     if (parser.syntaxErrorsCount > 0) {

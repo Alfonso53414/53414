@@ -1,60 +1,94 @@
-import { Parser } from "antlr4";
 import CalculatorVisitor from "./generated/CalculatorVisitor.js";
-import CalculatorParser from "./generated/CalculatorParser.js";
 
-export class CustomCalculatorVisitor extends CalculatorVisitor{
+export class CustomCalculatorVisitor extends CalculatorVisitor {
 
     constructor() {
         super();
-        this.memory = new Map();   //Declaro una variable de instancia con una memoria temporal para hacer las reducciones
-    } 
-    
-    visitInt(ctx) {
-        //obtengo el lexema correspondiente al INT que reconocio en el texto y lo convierto a entero.
-        return parseInt(ctx.INT().getText());
     }
 
-    visitPrintExpr(ctx) {
-        const value = this.visit(ctx.expr());
-        console.log(`\nResultado: ${value}`);
+    // Programa principal
+    visitProgram(ctx) {
+
         return this.visitChildren(ctx);
-      }
 
-
-    visitMulDiv(ctx) {
-        /* Las subexpresiones se visitaran recursivamente hasta ir obteniendo los valores correspondientes */
-        const left =  this.visit(ctx.expr(0));   //visito la subexpresion a la izquierda de la operacion
-        const right = this.visit(ctx.expr(1));  //visito la subexpresion a la derecha de la operacion. 
-        if (ctx.op.type==CalculatorParser.MUL)
-          return left * right;
-        else
-          return left / right;
-      }
-
-      visitAddSub(ctx) {
-        const left =  this.visit(ctx.expr(0));  
-        const right = this.visit(ctx.expr(1));  
-        if (ctx.op.type==CalculatorParser.ADD){
-          return left + right; }
-        else
-          return left - right;
-      }
-
-      visitParens(ctx) {
-        return this.visit(ctx.expr());
-      }
-
-      visitId(ctx) {
-        const id = ctx.ID().getText();
-        if (this.memory.has(id)) return this.memory.get(id);
-        return 0;
     }
 
-      visitAssign(ctx) {
-        const id = ctx.ID().getText();
-        const value = this.visit(ctx.expr());
-        this.memory.set(id, value);
-        return value;
+    // Declaración de función
+    visitFunctionDeclaration(ctx) {
+
+        const nombreFuncion = ctx.Identifier(0).getText();
+
+        console.log(`\nFunción detectada: ${nombreFuncion}`);
+
+        return this.visitChildren(ctx);
+
     }
-    
+
+    // console.log(...)
+    visitConsoleStatement(ctx) {
+
+        const resultado = this.visit(ctx.expression());
+
+        console.log(`console.log => ${resultado}`);
+
+        return resultado;
+
+    }
+
+    // Expresiones con + y -
+    visitExpression(ctx) {
+
+        // Caso simple
+        if (ctx.term().length === 1) {
+            return this.visit(ctx.term(0));
+        }
+
+        let resultado = this.visit(ctx.term(0));
+
+        for (let i = 1; i < ctx.term().length; i++) {
+
+            const operador = ctx.getChild(2 * i - 1).getText();
+
+            const valor = this.visit(ctx.term(i));
+
+            if (operador === '+') {
+                resultado += valor;
+            }
+            else if (operador === '-') {
+                resultado -= valor;
+            }
+
+        }
+
+        return resultado;
+
+    }
+
+    // Términos
+    visitTerm(ctx) {
+
+        // Número
+        if (ctx.Number()) {
+
+            return parseInt(ctx.Number().getText());
+
+        }
+
+        // Identificador
+        if (ctx.Identifier()) {
+
+            const nombre = ctx.Identifier().getText();
+
+            console.log(`Variable encontrada: ${nombre}`);
+
+            // Valor ficticio para pruebas
+            return 1;
+
+        }
+
+        // Expresión entre paréntesis
+        return this.visit(ctx.expression());
+
+    }
+
 }
